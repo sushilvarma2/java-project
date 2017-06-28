@@ -58,7 +58,7 @@ pipeline {
 }
 	stage('Promote to Green'){ 
         steps {
-	  sh "cp /var/www/html/rectangles/all/rectangle.jar /var/www/html/rectangles/green/rectangle.jar
+	  sh "cp /var/www/html/rectangles/all/rectangle.jar /var/www/html/rectangles/green/rectangle.jar"
 		}
 
 
