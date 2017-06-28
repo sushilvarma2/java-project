@@ -1,13 +1,10 @@
 pipeline {
-   agent { 
-    label 'master'
-         }
-   options {
-	buildDiscarder(logRotator(numToKeepStr: '2', artifactNumToKeepStr: '1'))
-
-}
+   agent none
    stages {
-     stage('Unit Tests') { 
+	stage('Unit Tests') { 
+	agent {
+	    label 'apache'
+         }
 	steps { 
 	 sh 'ant -f test.xml -v'
          junit 'reports/result.xml'
@@ -15,22 +12,39 @@ pipeline {
 
 }
      stage('build') {
+	agent {
+    	label 'apache'
+         }
+
        steps {
          sh 'ant -f build.xml -v'
-	    }	
-		}
-     stage('deploy') {
-       steps { 
-         sh "cp dist/rectangle.jar /var/www/html/rectangles/all/"
-}
-
-}
-}		
-   post {
+	    }
+	post {
      always {
       archiveArtifacts artifacts: 'dist/*.jar', fingerprint:true
-}
-}
+		}
+	}		
+		
+		}
+     stage('deploy') {
+	agent {
+    	label 'apache'
+         }
+	
+       steps { 
+         sh "cp dist/rectangle.jar /var/www/html/rectangles/all/"
+	}	
 
+}
+	stage("Running on Centos") {
+	agent {
+	label 'CentOS'
+		}
+	steps {
+	  sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/rectangle.jar"
+          sh "java -jar rectangle.jar 3 4"
 
+	      }	
+}
+}		
 }
