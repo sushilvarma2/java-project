@@ -46,5 +46,15 @@ pipeline {
 
 	      }	
 }
+	stage("Test on Debian") {
+	agent { 
+	   docker 'openjdk:8u131-jre'
+		}
+	steps { 
+	   sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/rectangle.jar"
+          sh "java -jar rectangle.jar 3 4" 
+		}	
+
+}
 }		
 }
