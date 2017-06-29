@@ -46,7 +46,7 @@ pipeline {
 	label 'CentOS'
 		}
 	steps {
-	  sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/rectangle_${env.MAJOR_VERSION}.jar"
+	  sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.jar"
           sh "java -jar rectangle_${env.MAJOR_VERSION}.jar 3 4"
 
 	      }	
