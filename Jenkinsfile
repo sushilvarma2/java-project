@@ -37,7 +37,7 @@ pipeline {
 	
        steps { 
 	sh "if ![ -d '/var/www/html/rectangles/all/${env.BRANCH_NAME}' ]; then mkdir /var/www/html/rectangles/all/${env.BRANCH_NAME}; fi"	 
-         sh "cp dist/rectangle_${env.MAJOR_VERSION}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
+         sh "cp dist/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/all/${env.BRANCH_NAME}/"
 	}	
 
 }
@@ -46,8 +46,8 @@ pipeline {
 	label 'CentOS'
 		}
 	steps {
-	  sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.jar"
-          sh "java -jar rectangle_${env.MAJOR_VERSION}.jar 3 4"
+	  sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
+          sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 4"
 
 	      }	
 }
@@ -56,8 +56,8 @@ pipeline {
 	   docker 'openjdk:8u131-jre'
 		}
 	steps { 
-	   sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.jar"
-          sh "java -jar rectangle_${env.MAJOR_VERSION}.jar 3 4" 
+	   sh "wget http://sushilvarma2-gmail-com6.mylabserver.com/rectangles/all/${env.BRANCH_NAME}/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
+          sh "java -jar rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar 3 4" 
 		}	
 
 }
@@ -69,7 +69,7 @@ pipeline {
 	  branch 'master'
 		}
 	steps {
-	  sh "cp /var/www/html/rectangles/all/rectangle_${env.MAJOR_VERSION}.jar /var/www/html/rectangles/green/rectangle_${env.MAJOR_VERSION}.jar"
+	  sh "cp /var/www/html/rectangles/all/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar /var/www/html/rectangles/green/rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}.jar"
 		}
 	}
 	stage('Promote Development Branch to Master') { 
@@ -91,8 +91,8 @@ pipeline {
 	    echo 'Pushing to Origin Master'
 	    sh 'git push origin master'
 	    echo 'Tagging the Release'
-	    sh "git tag rectangle-${env.MAJOR_VERSION}"
-	    sh "git push origin rectangle-${env.MAJOR_VERSION}"
+	    sh "git tag rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
+	    sh "git push origin rectangle_${env.MAJOR_VERSION}.${env.BUILD_NUMBER}"
 }
 
 }	
